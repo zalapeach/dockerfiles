@@ -15,5 +15,6 @@ jobs:
       - run:
           name: Run tests
           command: |
+            cd dockerapp/
             docker-compose up -d
             docker-compose run dockerapp python test.py
