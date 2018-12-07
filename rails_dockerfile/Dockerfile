@@ -1,6 +1,7 @@
 FROM ubuntu:bionic
 RUN apt-get update && apt-get install -y apt-utils \
-  sudo
+  sudo \
+  libpq-dev
 RUN useradd -ms /bin/bash -g sudo zala && \
   echo "zala:tamarindo" | chpasswd && \
   echo "zala ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
