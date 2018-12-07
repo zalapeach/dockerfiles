@@ -1,9 +1,11 @@
 FROM ubuntu:bionic
-RUN apt-get update && apt-get install -y sudo
+RUN apt-get update && apt-get install -y apt-utils \
+  sudo
 RUN useradd -ms /bin/bash -g sudo zala && \
   echo "zala:tamarindo" | chpasswd && \
   echo "zala ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 USER zala
+WORKDIR /home/zala
 RUN sudo apt-get update && \
   sudo apt-get install -y vim \
     git \
@@ -17,5 +19,9 @@ RUN sudo apt-get update && \
 RUN gpg2 --keyserver hkp://keys.gnupg.net --recv-keys \
   409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 RUN curl -sSL https://get.rvm.io | bash -s
-RUN /bin/bash -l -s ". /etc/profile.d/rvm.sh && rvm install 2.5.0"
-ENTRYPOINT ["/bin/bash", "-l", "-c"]
+RUN echo "source /home/zala/.rvm/scripts/rvm" >> /home/zala/.bashrc
+RUN /bin/bash -l -c "rvm install 2.5.3; \
+  gem install bundler; \
+  git clone git://github.com/TheNaox/dotfiles.git ~/.dotfiles; \
+  cd ~/.dotfiles; \
+  ./install.sh"
