@@ -27,3 +27,4 @@ RUN /bin/bash -l -c "rvm install 2.5.3; \
   git clone git://github.com/TheNaox/dotfiles.git ~/.dotfiles; \
   cd ~/.dotfiles; \
   ./install.sh"
+CMD ["sleep", "10000"]
