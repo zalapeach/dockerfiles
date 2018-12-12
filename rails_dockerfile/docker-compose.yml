@@ -18,7 +18,7 @@ services:
     ports:
       - "5432:5432"
   jenkins:
-    image: jenkins/jenkins:lts
+    image: zalapeach/docker-jenkins:0.1
     ports:
       - "8080:8080"
       - "50000:50000"
