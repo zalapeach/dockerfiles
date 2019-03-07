@@ -17,7 +17,7 @@ RUN sudo apt-get update; \
     gnupg2 \
     ca-certificates \
     build-essential; \
-  curl -sL https://deb.nodesource.com/setup_11.x | bash -; \
+  curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -; \
   sudo apt-get install -y nodejs; \
   sudo apt-get clean; \
   gpg2 --keyserver hkp://keys.gnupg.net --recv-keys \
@@ -29,4 +29,4 @@ RUN /bin/bash -l -c "rvm install 2.5.3; \
   git clone git://github.com/TheNaox/dotfiles.git ~/.dotfiles; \
   cd ~/.dotfiles; \
   ./install.sh"
-CMD ["sleep", "100000"]
+CMD ["/bin/bash", "-c"]
