@@ -1,11 +1,12 @@
 version: '3'
 services:
   rails:
-    image: zalapeach/zalarails:0.1
+    image: zalapeach/zalarails:v0.1
     ports:
       - "3000:3000"
     volumes:
       - /home/zala/Desktop/WORK/projects/zalapeach:/home/zala/projects/zalapeach
+      - /home/zala/Desktop/WORK/projects/hydra:/home/zala/projects/zalapeach
       - /home/zala/Desktop/WORK/volumes/zalarails/ruby-2.5.3@zalapeach:/home/zala/.rvm/gems/ruby-2.5.3@zalapeach
     links:
       - pgdb
@@ -19,7 +20,7 @@ services:
     ports:
       - "5432:5432"
   jenkins:
-    image: zalapeach/docker-jenkins:0.1
+    image: zalapeach/docker-jenkins:v0.1
     ports:
       - "8080:8080"
       - "50000:50000"
