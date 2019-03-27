@@ -26,7 +26,7 @@ RUN sudo apt-get update; \
   echo "source /home/zala/.rvm/scripts/rvm" >> /home/zala/.bashrc
 RUN /bin/bash -l -c "rvm install 2.5.3; \
   gem install bundler; \
-  git clone git://github.com/TheNaox/dotfiles.git ~/.dotfiles; \
+  git clone git://github.com/zalapeach/dotfiles.git ~/.dotfiles; \
   cd ~/.dotfiles; \
   ./install.sh"
 CMD ["/bin/bash", "-l"]
