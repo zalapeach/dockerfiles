@@ -1,0 +1,13 @@
+version: '3'
+services:
+  node:
+    image: zalapeach/zalarails:v0.1
+    volumes:
+      - /home/zala/Desktop/WORK/projects/Selenium:/home/zala/projects/Selenium
+    links:
+      - chrome
+    command: sleep 100000
+  chrome:
+    image: selenium/standalone-chrome:3.141.59-vanadium
+    ports:
+      - "4444:4444"

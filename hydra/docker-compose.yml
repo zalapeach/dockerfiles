@@ -1,0 +1,111 @@
+version: '3'
+services:
+  development:
+    image: zalapeach/zalarails:v0.1
+    ports:
+    - '3000:3000'
+    - '3001:3001'
+    - '3002:3002'
+    - '8081:8080'
+    volumes:
+    - /home/zala/Desktop/WORK/projects/hydra/:/home/zala/projects/hydra/
+    - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+    - DISPLAY=:0
+    - SSL_WEB_KEY=/home/zala/projects/hydra/certs/ui.key
+    - SSL_WEB_CRT=/home/zala/projects/hydra/certs/ui.crt
+    - SSL_API_KEY=/home/zala/projects/hydra/certs/api.key
+    - SSL_API_CRT=/home/zala/projects/hydra/certs/api.crt
+    - TRUSTED_CACERT=/home/zala/projects/hydra/certs/hydra.pem
+    - DATABASE_HOSTNAME=mysql
+    - DATABASE_USER=root
+    - DATABASE_PASSWORD=Admin4DST
+    - DATABASE_NAME=icp
+    - LDAP_URL=ldap://9.57.182.78:389
+    - SEARCHBASE=ou=bluepages,o=ibm.com
+    - JWT_SECRET=hydra
+    - RABBITMQ_HOSTNAME=rabbitmq
+    - RABBITMQ_PORT=5671
+    - RABBITMQ_USERNAME=admin
+    - RABBITMQ_PASSWORD=KkgsMkCbAEz69vgn
+    - RABBITMQ_VHOST=hydra
+    - SERVER_API_PORT=8080
+    - SERVER_API_HOST=api
+    links:
+    - mysql
+    - api
+    - rabbitmq
+    - vault
+    command: sleep 100000
+  api:
+    image: hydra_api:latest
+    ports:
+    - '8080:8080'
+    volumes:
+    - /home/zala/Desktop/WORK/projects/hydra/certs/:/certs/
+    environment:
+    - DATABASE_HOSTNAME=mysql
+    - DATABASE_USER=root
+    - DATABASE_PASSWORD=Admin4DST
+    - DATABASE_NAME=icp
+    - LDAP_URL=ldap://edirectory.ahe.pok.ibm.com:389
+    - SEARCHBASE=ou=bluepages,o=ibm.com
+    - JWT_SECRET=hydra
+    - RABBITMQ_HOSTNAME=rabbitmq
+    - RABBITMQ_PORT=5671
+    - RABBITMQ_USERNAME=admin
+    - RABBITMQ_PASSWORD=KkgsMkCbAEz69vgn
+    - RABBITMQ_VHOST=hydra
+    - SSL_API_KEY=/certs/api.key
+    - SSL_API_CRT=/certs/api.crt
+    - TRUSTED_CACERT=/certs/hydra.pem
+    - SERVER_API_PORT=8080
+    links:
+    - mysql
+    - rabbitmq
+  mysql:
+    image: mysql:5.7.22
+    ports:
+    - '3306:3306'
+    volumes:
+    - /home/zala/Desktop/WORK/projects/hydra/hydra_api/database/:/docker-entrypoint-initdb.d/
+    environment:
+    - MYSQL_DATABASE=icp
+    - MYSQL_ROOT_PASSWORD=Admin4DST
+  rabbitmq:
+    image: 'rabbitmq:3.7.4-management'
+    ports:
+    - '8083:15671'
+    - '5671:5671'
+    volumes:
+    - /home/zala/Desktop/WORK/projects/hydra/certs/:/certs/
+    environment:
+    - RABBITMQ_MANAGEMENT_SSL_CACERTFILE=/certs/hydra.pem
+    - RABBITMQ_MANAGEMENT_SSL_CERTFILE=/certs/rabbitmq.crt
+    - RABBITMQ_MANAGEMENT_SSL_KEYFILE=/certs/rabbitmq.key
+    - RABBITMQ_MANAGEMENT_SSL_FAIL_IF_NO_PEER_CERT=false
+    - RABBITMQ_MANAGEMENT_SSL_DEPTH=1
+    - RABBITMQ_MANAGEMENT_SSL_VERIFY=verify_none
+    - RABBITMQ_SSL_CACERTFILE=/certs/hydra.pem
+    - RABBITMQ_SSL_CERTFILE=/certs/rabbitmq.crt
+    - RABBITMQ_SSL_KEYFILE=/certs/rabbitmq.key
+    - RABBITMQ_SSL_FAIL_IF_NO_PEER_CERT=false
+    - RABBITMQ_SSL_DEPTH=1
+    - RABBITMQ_SSL_VERIFY=verify_none
+    - RABBITMQ_DEFAULT_USER=admin
+    - RABBITMQ_DEFAULT_PASS=KkgsMkCbAEz69vgn
+    - RABBITMQ_DEFAULT_VHOST=hydra
+    - RABBITMQ_USE_LONGNAME=true
+  vault:
+    image: 'vault:1.3.3'
+    ports:
+    - '8200:8200'
+    volumes:
+    - /home/zala/Desktop/WORK/projects/hydra/certs/:/certs/
+    - /home/zala/Desktop/WORK/projects/hydra/vault/:/vault/
+    environment:
+    - VAULT_ADDR=https://127.0.0.1:8200
+    - VAULT_CACERT=/certs/hydra.pem
+    cap_add:
+    - IPC_LOCK
+    command: /vault/initialize.sh

@@ -16,7 +16,14 @@ RUN sudo apt-get update; \
     curl \
     gnupg2 \
     ca-certificates \
-    build-essential; \
+    build-essential \
+    xvfb \
+    libgtk-3-dev \
+    libnotify-dev \
+    libgconf-2-4 \
+    libnss3 \
+    libxss1 \
+    libasound2; \
   curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -; \
   sudo apt-get install -y nodejs; \
   sudo apt-get clean; \
