@@ -24,7 +24,7 @@ RUN sudo apt-get update; \
     libnss3 \
     libxss1 \
     libasound2; \
-  curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -; \
+  curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -; \
   sudo apt-get install -y nodejs; \
   sudo apt-get clean; \
   gpg2 --keyserver hkp://keys.gnupg.net --recv-keys \

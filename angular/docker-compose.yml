@@ -1,0 +1,9 @@
+version: '3'
+services:
+  development:
+    image: zalapeach/zalarails:v0.2
+    ports:
+    - '3000:3000'
+    volumes:
+    - /home/zala/Desktop/WORK/projects/angular:/home/zala/projects/angular
+    command: sleep 100000
